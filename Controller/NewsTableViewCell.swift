@@ -15,26 +15,15 @@ class NewsTableViewCell: UITableViewCell, NewsManagerDelegate {
     @IBOutlet weak var newsImageView: UIImageView!
     
     var newsManager = NewsManager()
-    var newsData = [NewsData]()
-    var newsModel = [NewsModel]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         newsManager.delegate = self
         
-        newsManager.fetchData { news in
-            
-        }
+        newsManager.fetchData { news in }
 
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        
-    }
-    
     
     func didUpdateNews(news: NewsModel) {
         titleLabel.text = news.title
@@ -48,10 +37,6 @@ class NewsTableViewCell: UITableViewCell, NewsManagerDelegate {
     
 }
 
-
-//if let image = news.urlToImage {
-//self.newsImageView.downloaded(from: image)
-//}
 
 extension UIImageView {
     func downloaded(from url: URL, contentMode mode: ContentMode = .scaleAspectFill) {

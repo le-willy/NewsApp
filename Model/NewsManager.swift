@@ -21,7 +21,6 @@ struct NewsManager {
     func fetchData(completionHandler: @escaping (Result<[Articles], Error>) -> Void) {
         
         if let url = URL(string: newsApi) {
-//            let session = URLSession(configuration: .default)
             let task = URLSession.shared.dataTask(with: url) { data, _, error in
                 if let error = error {
                     completionHandler(.failure(error))
@@ -36,63 +35,9 @@ struct NewsManager {
                     }
                 }
             }
-            
-//            let task = session.dataTask(with: url) { data, response, error in
-//                if error != nil, data != nil {
-//                    print(error!)
-//                    return
-//                }
-//                if let safeData = data {
-//                    //                    newsData = try! JSONDecoder().decode(NewsData.self, from: safeData)
-//                    //                    if let news = parseJSON(newsData: safeData) {
-//                    //                        delegate?.didUpdateNews(news: news)
-//                    //                    }
-//                    let decoder = JSONDecoder()
-//                    do {
-//                        let decodedData = try decoder.decode(NewsData.self, from: safeData)
-//
-//                        print(decodedData.articles)
-//                        completionHandler(newsData)
-//                    } catch {
-//                        print(error)
-//                    }
-//
-//                }
-//
-//            }
             task.resume()
-            
         }
-    }
-    
-    
-    
-    
-    func fetchData() {
-        performRequest(urlString: newsApi)
-    }
-    
-    func performRequest(urlString: String) {
-        
-    }
-    
-    func parseJSON(newsData: Data) -> NewsModel? {
-        let decoder = JSONDecoder()
-        do {
-            let decodedData = try decoder.decode(NewsData.self, from: newsData)
-            let totalResults = decodedData.totalResults
-            let name = decodedData.articles[0].source.name
-            let title = decodedData.articles[0].title
-            let newsImage = decodedData.articles[0].urlToImage
-            
-            let newsModel = NewsModel( results: totalResults, title: title, source: name, urlToImage: newsImage)
-            
-            return newsModel
-        } catch {
-            print(error)
-            return nil
-        }
-    }
+    } 
 }
 
 
