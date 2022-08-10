@@ -13,6 +13,7 @@ protocol NewsManagerDelegate: AnyObject {
 
 struct NewsManager {
     let newsApi = "https://newsapi.org/v2/top-headlines?country=us&apiKey=31ac28d2be5a4d76b9a3e1c16efbff4e"
+    let newsSearchedString = "https://newsapi.org/v2/top-headlines?country=us&apiKey=31ac28d2be5a4d76b9a3e1c16efbff4e&q="
     
     weak var delegate: NewsManagerDelegate?
     
@@ -37,7 +38,29 @@ struct NewsManager {
             }
             task.resume()
         }
-    } 
+    }
+    func search(with query: String, completionHandler: @escaping (Result<[Articles], Error>) -> Void) {
+        guard !query.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+        let urlString = newsSearchedString + query
+        
+        if let url = URL(string: urlString) {
+            let task = URLSession.shared.dataTask(with: url) { data, _, error in
+                if let error = error {
+                    completionHandler(.failure(error))
+                }
+                else if let data = data {
+                    do {
+                        let result = try JSONDecoder().decode(NewsData.self, from: data)
+                        print(result.articles)
+                        completionHandler(.success(result.articles))
+                    } catch {
+                        completionHandler(.failure(error))
+                    }
+                }
+            }
+            task.resume()
+        }
+    }
 }
 
 

@@ -16,8 +16,7 @@ class ViewController: UIViewController {
     var articles = [Articles]()
     var newsModel = [NewsModel]()
     
-    
-    var testArray = ["1", "2", "3", "4", "5"]
+    let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +27,13 @@ class ViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        fechData()
+        createSearchBar()
+        fetchData()
+       
         
     }
     
-    func fechData() {
+    func fetchData() {
         newsManager.fetchData { [weak self] result in
             switch result {
             case .success(let articles):
@@ -41,6 +41,7 @@ class ViewController: UIViewController {
                 self?.newsModel = articles.compactMap({
                     NewsModel(results: 0, title: $0.title, source: $0.source.name, urlToImage: $0.urlToImage)
                 })
+                
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }
@@ -51,6 +52,42 @@ class ViewController: UIViewController {
         }
     }
     
+    func createSearchBar() {
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+    }
+}
+
+//MARK: - Search Delegate
+
+extension ViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+        
+        newsManager.search(with: text) {[weak self] result in
+            switch result {
+            case .success(let articles):
+                self?.articles = articles
+                self?.newsModel = articles.compactMap({
+                    NewsModel(results: 0, title: $0.title, source: $0.source.name, urlToImage: $0.urlToImage)
+                })
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                    self?.searchController.dismiss(animated: true)
+                }
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if searchBar.text == "" {
+            fetchData()
+        }
+    }
 }
 
 
@@ -66,7 +103,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsTableViewCell") as! NewsTableViewCell
         
         cell.didUpdateNews(news: newsModel[indexPath.row])
-
+        
         return cell
     }
     
