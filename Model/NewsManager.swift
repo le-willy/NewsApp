@@ -29,7 +29,6 @@ struct NewsManager {
                 else if let data = data {
                     do {
                         let result = try JSONDecoder().decode(NewsData.self, from: data)
-                        print(result.articles)
                         completionHandler(.success(result.articles))
                     } catch {
                         completionHandler(.failure(error))
@@ -51,7 +50,6 @@ struct NewsManager {
                 else if let data = data {
                     do {
                         let result = try JSONDecoder().decode(NewsData.self, from: data)
-                        print(result.articles)
                         completionHandler(.success(result.articles))
                     } catch {
                         completionHandler(.failure(error))

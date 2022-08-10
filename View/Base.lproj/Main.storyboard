@@ -40,20 +40,27 @@
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5vK-GA-Azr" secondAttribute="trailing" id="uEa-V7-qrD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="aLb-ys-EBG"/>
+                    <navigationItem key="navigationItem" id="aLb-ys-EBG">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="QcW-Pu-akM">
+                            <connections>
+                                <action selector="sideMenuPressed:" destination="BYZ-38-t0r" id="ky4-Rh-qvE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="5vK-GA-Azr" id="78M-5Q-y88"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="19" y="905"/>
+            <point key="canvasLocation" x="928.98550724637687" y="904.6875"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="LnK-X8-CMI">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Q6o-zF-fgK" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="490-uP-FCq"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="lCp-Vh-7sU">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -7,6 +7,7 @@
 
 import UIKit
 import SafariServices
+import SideMenu
 
 class ViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class ViewController: UIViewController {
     var newsModel = [NewsModel]()
     
     let searchController = UISearchController(searchResultsController: nil)
+    var sideMenu: SideMenuNavigationController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,13 +26,15 @@ class ViewController: UIViewController {
         view.backgroundColor = .darkGray
         
         tableView.register(UINib(nibName: "NewsTableViewCell", bundle: nil), forCellReuseIdentifier: "NewsTableViewCell")
-        
         tableView.delegate = self
         tableView.dataSource = self
+        
         createSearchBar()
         fetchData()
-       
         
+        sideMenu = SideMenuNavigationController(rootViewController: SideMenuController())
+        SideMenuManager.default.leftMenuNavigationController = sideMenu
+        SideMenuManager.default.addPanGestureToPresent(toView: self.view)
     }
     
     func fetchData() {
@@ -56,6 +60,11 @@ class ViewController: UIViewController {
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
     }
+    
+    @IBAction func sideMenuPressed(_ sender: UIBarButtonItem) {
+        present(sideMenu!, animated: true)
+    }
+    
 }
 
 //MARK: - Search Delegate
